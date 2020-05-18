@@ -97,6 +97,7 @@ regex = re.compile('\d+')
 data=[]
 flag=0
 W_heat=50 #=280,(J/sec) initial condition
+itime=0
 while 1:
   try:
     dT_list = []
@@ -119,7 +120,7 @@ while 1:
 
     line = ser1.readline()
     match = regex.findall(str(line))
-    data.append(float(match[1])*60.0+float(match[2])+float(match[3])*0.1)
+    data.append(itime*0.1)
     data.append(float(match[4]+"."+match[5]))
     data.append(float(match[6]+"."+match[7]))
     data.append(float(match[8]+"."+match[9]))
@@ -139,6 +140,7 @@ while 1:
         f.write(", ")
     f.write("\n")
     flag=0
+    itime+=1
 	
 	 #for i in range(int(50/dt)):
 	 #  t = i*dt
