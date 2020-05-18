@@ -62,6 +62,7 @@ import serial
 import time
 import sys
 import re
+from pylab import *
 
 # strPort = '/dev/tty.usbserial-A7006Yqh'
 print ("pls input port name = M5Stck, ARDUINO, file_name.csv")
@@ -91,6 +92,7 @@ Kp = 0.0
 Kd = 0.0
 Ki = 0.0	
 
+y=[0]*10
 regex = re.compile('\d+')
 data=[]
 flag=0
@@ -153,6 +155,13 @@ while 1:
     print("W_cool=",W_cool())
     print("W_heat=",W_heat)
     Kp=0.1; Kd=0.5; Ki=0.0
+    x=range(0, 10, 1)
+    y.insert(0, T)
+    y.pop(10)
+    clf()
+    plot(x, y)
+    pause(0.05)
+#    show()
 #    W_heat= -Kp*(rCp*dT)*dt -Kd*(dQ/dt)*dt -Ki*(dT*dt)
 #    W_heat= -Kp*(rCp*dT) -Kd*(W_heat) -Ki*(W_heat)
     W_heat= -(7.0)*dT
@@ -168,9 +177,18 @@ while 1:
       val=int(W_heat/W_heat_max*255)%256		
     a = val.to_bytes(1, byteorder="little")
     ser2.write(a)
+
+#xlabel('time (s)')
+#ylabel('voltage (mV)')
+#title('About as simple as it gets, folks')
+#grid(True)
   except KeyboardInterrupt:
     print ('exiting')
     break
+
+
+
+
 
 f.close()
 ser1.flush()
